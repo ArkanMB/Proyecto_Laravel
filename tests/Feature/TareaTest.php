@@ -4,39 +4,50 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Tarea;
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TareaTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+  use RefreshDatabase, WithFaker;
 
-        $response->assertStatus(200);
-    }
+  public function test_get_tareas_all(): void
+  {
+    $user = User::factory()->create();
+    $tarea = new Tarea();
+    $tarea->titulo = "testTitulo";
+    $tarea->descripcion = "testDescripcion";
+    $tarea->save();
 
-    public function get_tareas()
-    {
-       // $user = User::factory()->create();
+    $response = $this->actingAs($user)->getJson('api/tareas');
+    $response->assertStatus(200);
 
-        $tarea = new Tarea();
-        $tarea->titulo = "testTitulo";
-        $tarea->descripcion = "testDescripcion";
-        $tarea->save();
+    $response->assertJsonFragment([
+      'id' => $tarea->id,
+      'titulo' => 'Titulo: ' . $tarea->titulo,
+      'descripcion' => 'Descripcion: ' . $tarea->descripcion,
+      'etiquetas' => 'Etiqueta: []'
+    ]);
+  }
 
-        $response = $this->getJson('api/tareas');
-        $response->assertStatus(200);
+  public function test_get_una_tarea(): void
+  {
+    $user = User::factory()->create();
+    $tarea = new Tarea();
+    $tarea->titulo = "testTitulo";
+    $tarea->descripcion = "testDescripcion";
+    $tarea->save();
 
-        $response->assertJsonFragment([
-            'id' => $tarea->id,
-            'titulo' => 'Titulo: '. $tarea->titulo,
-            'descripcion' => 'Desc: '. $tarea->descripcion,
-            'etiquetas' => $tarea->etiquetas
-        ]);
-    }
+    $response = $this->actingAs($user)->getJson('api/tareas/' . $tarea->id);
+    $response->assertStatus(200);
+
+    $response->assertJsonFragment([
+      'id' => $tarea->id,
+      'titulo' => 'Titulo: ' . $tarea->titulo,
+      'descripcion' => 'Descripcion: ' . $tarea->descripcion,
+      'etiquetas' => 'Etiqueta: []'
+    ]);
+  }
+
 }

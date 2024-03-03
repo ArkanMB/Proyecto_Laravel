@@ -12,8 +12,8 @@ class Etiqueta extends Model
     // protected $fillable = ["nombre"];
     protected $hidden = ['created_at', 'updated_at'];
 
-    // public function tareas()
-    // {
-    //     return $this->belongsToMany(Tarea::class, 'tarea_etiqueta', 'etiqueta_id', 'tarea_id');
-    // }
+    public function tareas()
+    {
+         return $this->belongsToMany(Tarea::class, 'tarea_etiqueta', 'etiqueta_id', 'tarea_id');
+     }
 }
