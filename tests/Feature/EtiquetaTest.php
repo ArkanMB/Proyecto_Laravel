@@ -32,7 +32,7 @@ class EtiquetaTest extends TestCase
   {
     $user = User::factory()->create();
     $etiqueta = new Etiqueta();
-    $etiqueta->nombre = "testNombre";
+    $etiqueta->nombre = "testNombre99";
     $etiqueta->save();
 
     $response = $this->actingAs($user)->getJson('api/etiquetas/' . $etiqueta->id);
@@ -42,6 +42,24 @@ class EtiquetaTest extends TestCase
       'id' => $etiqueta->id,
       'nombre' => 'Nombre: ' . $etiqueta->nombre
     ]);
+  }
+
+  public function test_create_etiqueta(): void
+  {
+    $user = User::factory()->create();
+    $response = $this->actingAs($user)->postJson('api/etiquetas', [
+      'nombre' => 'testNombre33',
+    ]);
+    $response->assertStatus(201);
+  }
+
+  public function test_error_create_etiqueta(): void
+  {
+    $user = User::factory()->create();
+    $response = $this->actingAs($user)->postJson('api/etiquetas', [
+      'nombre' => '',
+    ]);
+    $response->assertStatus(422);
   }
 
 }

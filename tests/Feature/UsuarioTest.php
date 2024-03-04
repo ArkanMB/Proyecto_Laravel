@@ -18,7 +18,7 @@ class UsuarioTest extends TestCase
       'password' => 'test'
     ];
 
-    $response = $this->postJson('api/registro', $user);
+    $response = $this->postJson('api/register', $user);
     $response->assertStatus(200)->assertJsonStructure([
       'data',
       'access_token',
