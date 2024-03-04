@@ -28,7 +28,7 @@ class AuthController extends Controller
   {
     auth()->user()->tokens()->delete();
     return [
-      'message' => 'Session cerrada correctamente'
+      'message' => 'Sesion cerrada correctamente'
     ];
   }
 

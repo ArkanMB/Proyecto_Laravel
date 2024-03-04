@@ -30,7 +30,7 @@ class TareaController extends Controller
     $tarea->descripcion = $request->descripcion;
     $tarea->save();
 
-    $tarea->etiquetas()->attach($request->tareas);
+    $tarea->etiquetas()->attach($request->etiquetas);
     return new TareaResource($tarea);
   }
 

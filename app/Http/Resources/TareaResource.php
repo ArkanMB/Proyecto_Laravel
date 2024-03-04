@@ -18,7 +18,7 @@ class TareaResource extends JsonResource
       'id' => $this->id,
       'titulo' => 'Titulo: ' . $this->titulo,
       'descripcion' => 'Descripcion: ' . $this->descripcion,
-      'etiquetas' => 'Etiqueta: ' . $this->etiquetas
+      'etiquetas' => 'Etiqueta: ' . $this->etiquetas != null ? $this->etiquetas->pluck('nombre') : []
     ];
   }
 }
